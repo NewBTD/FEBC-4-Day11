@@ -32,7 +32,6 @@ app.get('/product',(req,res)=>{
   let startIndex = (page - 1) * limit
   let endIndex = page * limit
   let paginatedProduct = products.slice(startIndex,endIndex)
-  console.log("hello")
   res.render("product",{paginatedProduct, limit, page})
 })
 
