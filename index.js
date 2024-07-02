@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 
 app.get('/page2', (req, res) => {
   let q = req.query.search_query
-  res.render('page2',{q})
+  res.render('page2', { q })
 })
 
 let products = []
@@ -25,22 +25,46 @@ for (let i = 1; i <= 100; i++) {
   products.push(product)
 }
 
-app.get('/product',(req,res)=>{
+app.get('/product', (req, res) => {
   let limit = parseInt(req.query.limit) || 10
   let page = parseInt(req.query.page) || 1
   //page = 1, page = 2
   let startIndex = (page - 1) * limit
   let endIndex = page * limit
-  let paginatedProduct = products.slice(startIndex,endIndex)
-  res.render("product",{paginatedProduct, limit, page})
+  let paginatedProduct = products.slice(startIndex, endIndex)
+  res.render("product", { paginatedProduct, limit, page })
 })
-app.get('/add-product',(req,res)=>{
+app.get('/add-product', (req, res) => {
   res.render('add-product')
 })
-app.post('/add-product',(req,res)=>{
+app.get('/edit-product/:id', (req, res) => {
+  const productId = parseInt(req.params.id);
+  const product = products.find(p => p.id === productId);
+  if (!product) {
+    res.status(404).send('Product not found');
+  } else {
+    res.render('edit-product', { product });
+  }
+})
+app.post('/edit-product', (req, res) => {
   const { id, name, description, price } = req.body;
+  const productId = parseInt(id);
+  const index = products.findIndex(p => p.id === productId);
+  if (index === -1) {
+    res.status(404).send('Product not found');
+  } else {
+    products[index] = { id, name, description, price };
+    res.redirect('/product');
+  }
+})
+
+app.post('/add-product', (req, res) => {
+  // const { id, name, description, price } = req.body;
+  const name = req.body.name;
+  const description = req.body.description;
+  const price = req.body.price;
   const newProduct = {
-    id:products.length + 1,
+    id: products.length + 1,
     name,
     description,
     price
@@ -48,6 +72,7 @@ app.post('/add-product',(req,res)=>{
   products.push(newProduct);
   res.redirect('/product');
 })
+
 
 
 app.listen(port, () => {
