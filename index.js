@@ -37,6 +37,18 @@ app.get('/product',(req,res)=>{
 app.get('/add-product',(req,res)=>{
   res.render('add-product')
 })
+app.post('/add-product',(req,res)=>{
+  const { id, name, description, price } = req.body;
+  const newProduct = {
+    id:products.length + 1,
+    name,
+    description,
+    price
+  };
+  products.push(newProduct);
+  res.redirect('/product');
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
