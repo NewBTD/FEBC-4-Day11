@@ -73,7 +73,16 @@ app.post('/add-product', (req, res) => {
   res.redirect('/product');
 })
 
-
+app.post('/delete-product/:id', (req, res) => {
+  const productId = parseInt(req.params.id);
+  const index = products.findIndex(p => p.id === productId);
+  if (index === -1) {
+    res.status(404).send('Product not found');
+  } else {
+    products.splice(index, 1);
+    res.redirect('/product');
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

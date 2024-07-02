@@ -13,6 +13,7 @@
                 <h2><%= product.name %></h2>
                 <h3><%= product.price %></h3>
                 <p><%= product.description %></p>
+                <a href="/edit-product/<%= product.id%>">Edit</a>
             </li>
         <% }) %>
     </ul>
