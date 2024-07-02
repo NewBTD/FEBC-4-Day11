@@ -34,7 +34,9 @@ app.get('/product',(req,res)=>{
   let paginatedProduct = products.slice(startIndex,endIndex)
   res.render("product",{paginatedProduct, limit, page})
 })
-
+app.get('/add-product',(req,res)=>{
+  res.render('add-product')
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
